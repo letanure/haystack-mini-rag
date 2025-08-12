@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minirag"
+version = "0.1.0"
+description = "Simple RAG implementation for learning"
+dependencies = [
+    "haystack-ai>=2.0.0",
+    "sentence-transformers>=2.7.0", 
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "click>=8.1.0"
+]
+
+[project.scripts]
+minirag = "minirag.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["minirag*"]
+exclude = ["data*", "tests*"]
