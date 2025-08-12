@@ -15,6 +15,10 @@ flowchart TD
     C --> F[SimpleRAG Pipeline]
     D --> G[Evaluator Process]
     E --> H[Cache Operations]
+    
+    F --> I[Show Answer]
+    G --> J[Show Metrics]
+    H --> K[Show Cache Info]
 ```
 
 ## Component Overview
