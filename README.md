@@ -32,18 +32,18 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    A[docs.jsonl] --> B[SimpleRAG]
-    C[golden_test.json] --> D[Evaluator]
+    H[CLI ask] --> B[SimpleRAG]
+    I[CLI eval] --> D[Evaluator]
+    J[CLI cache] --> G[EmbeddingCache]
+    
+    A[docs.jsonl] --> B
+    C[golden_test.json] --> D
     
     B --> E[SentenceTransformers]
     B --> F[OpenAI API]
-    B --> G[EmbeddingCache]
+    B <--> G
     
     D --> B
-    
-    H[CLI ask] --> B
-    I[CLI eval] --> D
-    J[CLI cache] --> G
 ```
 
 ## Features
