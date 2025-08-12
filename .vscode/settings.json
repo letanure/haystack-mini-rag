@@ -1,0 +1,83 @@
+{
+  // Python Configuration
+  "python.defaultInterpreterPath": "./.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python.analysis.typeCheckingMode": "basic",
+  
+  // Formatting
+  "python.formatting.provider": "none",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  
+  // Linting with Ruff (modern, fast)
+  "python.linting.enabled": true,
+  "python.linting.ruffEnabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": false,
+  
+  // Type Checking with MyPy
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.autoSearchPaths": true,
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  
+  // Testing
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
+  
+  // File Associations
+  "files.associations": {
+    "*.py": "python",
+    "*.pyi": "python",
+    "*.ipynb": "jupyter-notebook",
+    "*.rst": "restructuredtext"
+  },
+  
+  // Editor Settings
+  "editor.rulers": [88],  // Black line length
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  
+  // Exclude patterns
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
+    "**/.ruff_cache": true,
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+  
+  // IntelliSense
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.extraPaths": [
+    "./minirag"
+  ],
+  
+  // Documentation
+  "restructuredtext.confPath": "./docs",
+  "restructuredtext.builtDocumentationPath": "./docs/_build/html",
+  
+  // Terminal
+  "terminal.integrated.env.osx": {
+    "PYTHONPATH": "${workspaceFolder}"
+  },
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${workspaceFolder}"
+  },
+  "terminal.integrated.env.windows": {
+    "PYTHONPATH": "${workspaceFolder}"
+  }
+}
