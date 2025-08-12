@@ -14,3 +14,7 @@ dist/
 .env
 .DS_Store
 *.log
+
+# Documentation builds
+docs/_build/
+docs_pdoc/
