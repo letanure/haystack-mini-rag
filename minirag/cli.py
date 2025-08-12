@@ -18,11 +18,13 @@ def main():
 @click.option("--k", default=4, help="Number of docs to retrieve")
 @click.option("--show-sources", is_flag=True, help="Show source documents")
 @click.option("--refresh-cache", is_flag=True, help="Refresh embedding cache")
-def ask(question: str, k: int, show_sources: bool, refresh_cache: bool):
+@click.option("--source", default="data/docs.jsonl", help="Path to documents (file, directory, or URL)")
+@click.option("--source-type", default="auto", help="Source type: auto, jsonl, pdf, docx, txt, url, directory")
+def ask(question: str, k: int, show_sources: bool, refresh_cache: bool, source: str, source_type: str):
     """Ask a question."""
     click.echo("🔄 Loading...")
     
-    rag = SimpleRAG()
+    rag = SimpleRAG(docs_path=source, source_type=source_type)
     rag.setup(force_refresh=refresh_cache)
     
     click.echo("🔍 Searching...")
@@ -47,13 +49,15 @@ def ask(question: str, k: int, show_sources: bool, refresh_cache: bool):
 @main.command()
 @click.option("--detailed", is_flag=True, help="Show detailed evaluation report")
 @click.option("--refresh-cache", is_flag=True, help="Refresh embedding cache")
-def eval(detailed: bool, refresh_cache: bool):
+@click.option("--source", default="data/docs.jsonl", help="Path to documents (file, directory, or URL)")
+@click.option("--source-type", default="auto", help="Source type: auto, jsonl, pdf, docx, txt, url, directory")
+def eval(detailed: bool, refresh_cache: bool, source: str, source_type: str):
     """Evaluate the RAG system."""
     from .evaluator import Evaluator
     
     click.echo("📊 Running evaluation...")
     
-    rag = SimpleRAG()
+    rag = SimpleRAG(docs_path=source, source_type=source_type)
     rag.setup(force_refresh=refresh_cache)
     evaluator = Evaluator(rag)
     

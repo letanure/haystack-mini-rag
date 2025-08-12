@@ -14,6 +14,7 @@ from haystack.components.embedders import (
 from haystack.components.retrievers.in_memory import InMemoryEmbeddingRetriever
 
 from .cache import EmbeddingCache
+from .loaders import DocumentLoader
 
 try:
     from openai import OpenAI
@@ -34,37 +35,27 @@ class SimpleRAG:
     
     def __init__(self, docs_path: str = "data/docs.jsonl", 
                  embed_model: str = "sentence-transformers/all-MiniLM-L6-v2",
-                 use_cache: bool = True):
+                 use_cache: bool = True,
+                 source_type: str = "auto"):
         self.docs_path = docs_path
         self.embed_model = embed_model  # MiniLM: fast, 384 dimensions, good quality
         self.use_cache = use_cache
+        self.source_type = source_type
         self.cache = EmbeddingCache() if use_cache else None
+        self.loader = DocumentLoader()
         self.retriever = None
         self.query_embedder = None
         
         os.environ["TOKENIZERS_PARALLELISM"] = "false"  # Prevent fork warnings
     
     def load_documents(self) -> List[Document]:
-        """Load documents from JSONL file."""
-        if not os.path.exists(self.docs_path):
-            raise FileNotFoundError(f"Documents file not found: {self.docs_path}")
-            
-        docs = []
-        with open(self.docs_path, "r", encoding="utf-8") as f:
-            for line_num, line in enumerate(f, 1):
-                if not line.strip():  # Skip empty lines
-                    continue
-                try:
-                    data = json.loads(line)
-                    if "id" not in data or "content" not in data:
-                        raise ValueError(f"Missing 'id' or 'content' in line {line_num}")
-                    docs.append(Document(id=data["id"], content=data["content"]))
-                except json.JSONDecodeError as e:
-                    raise ValueError(f"Invalid JSON in line {line_num}: {e}")
-        
-        if not docs:
-            raise ValueError(f"No valid documents found in {self.docs_path}")
-        return docs
+        """Load documents from various sources using DocumentLoader."""
+        try:
+            docs = self.loader.load_documents(self.docs_path, self.source_type)
+            print(f"Loaded {len(docs)} documents from {self.docs_path}")
+            return docs
+        except Exception as e:
+            raise ValueError(f"Failed to load documents from {self.docs_path}: {e}")
     
     def setup(self, force_refresh: bool = False):
         """Initialize the RAG system - embed documents once, query many times."""

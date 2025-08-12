@@ -44,8 +44,9 @@ flowchart LR
 - **Dense Retrieval**: Uses Haystack v2 with sentence-transformers (MiniLM) for semantic search
 - **OpenAI Generation**: Integrates with GPT-4o-mini for answer generation
 - **Smart Caching**: Disk-based embedding cache for 10x faster repeated runs
+- **Multiple Document Types**: Load from JSONL, PDF, DOCX, TXT files, directories, and URLs
 - **Comprehensive Evaluation**: Recall@K + answer quality metrics with 15 test cases
-- **Professional CLI**: Color-coded output with `--refresh-cache`, `--detailed` flags
+- **Professional CLI**: Color-coded output with `--source`, `--refresh-cache`, `--detailed` flags
 - **20 AI/ML documents**: Curated knowledge base about AI concepts
 
 ## Setup
@@ -75,8 +76,21 @@ minirag ask "What is RAG?"
 minirag ask "How do embeddings work?" --show-sources
 ```
 
-### Adjust retrieval count
+### Different document sources
 ```bash
+# Load from text file
+minirag ask "What is NLP?" --source="docs/nlp_guide.txt"
+
+# Load from PDF
+minirag ask "What does this paper discuss?" --source="papers/research.pdf"
+
+# Load from directory (all supported files)  
+minirag ask "What topics are covered?" --source="documents/" --source-type="directory"
+
+# Load from web URL
+minirag ask "What is this about?" --source="https://en.wikipedia.org/wiki/Machine_learning"
+
+# Adjust retrieval count
 minirag ask "What are transformers?" --k 5 --show-sources
 ```
 
@@ -158,9 +172,9 @@ with a generator to produce grounded answers [1].
 Ready to level up? Here's a suggested learning path with increasing complexity:
 
 ### 🟢 **Beginner Extensions** (Start Here)
-1. **Add More Document Types**: Load PDFs, Word docs, web scraping
-2. **Improve Evaluation**: Add more test queries, measure answer quality
-3. **Simple Caching**: Cache embeddings to disk, avoid re-computing
+1. ✅ **Add More Document Types**: Load PDFs, Word docs, web scraping
+2. ✅ **Improve Evaluation**: Add more test queries, measure answer quality
+3. ✅ **Simple Caching**: Cache embeddings to disk, avoid re-computing
 4. **Basic Error Handling**: Retry failed API calls, better error messages
 
 ### 🟡 **Intermediate RAG** (Build Production Skills)  

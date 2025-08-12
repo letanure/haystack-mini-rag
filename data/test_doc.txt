@@ -1,0 +1,12 @@
+Natural Language Processing Overview
+
+Natural Language Processing (NLP) is a branch of artificial intelligence that helps computers understand, interpret, and manipulate human language. NLP combines computational linguistics with statistical and machine learning models to enable computers to process human language in a valuable way.
+
+Key applications of NLP include:
+- Text classification and sentiment analysis
+- Machine translation between languages
+- Question-answering systems
+- Text summarization
+- Named entity recognition
+
+Modern NLP systems often use transformer-based models like BERT, GPT, and T5, which have achieved remarkable performance on various language understanding tasks.
