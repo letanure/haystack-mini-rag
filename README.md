@@ -6,80 +6,44 @@ A lightweight Retrieval-Augmented Generation (RAG) implementation for learning p
 
 ```mermaid
 flowchart TD
-    A[User Query] --> B[CLI Command]
+    A[User] --> B[CLI Commands]
     
-    B --> C[Ask Question]
-    B --> D[Run Evaluation] 
-    B --> E[Manage Cache]
+    B --> C[minirag ask]
+    B --> D[minirag eval]
+    B --> E[minirag cache]
     
-    C --> F[Setup Phase]
-    F --> G[Check Cache]
-    G --> H[Load Documents]
-    H --> I[Generate Embeddings]
-    I --> J[Create Document Store]
+    C --> F[SimpleRAG]
+    F --> G[Setup with Cache Check]
+    G --> H[Search Documents]
+    H --> I[Generate Answer]
+    I --> J[Return Response]
     
-    C --> K[Retrieval Phase]
-    K --> L[Embed Query]
-    L --> M[Search Similar Docs]
-    M --> N[Return Top Results]
+    D --> K[Evaluator]
+    K --> L[Load Test Cases]
+    L --> M[Run SimpleRAG on Each]
+    M --> N[Calculate Recall and Quality]
+    N --> O[Show Results]
     
-    C --> O[Generation Phase]
-    O --> P[Format Prompt]
-    P --> Q[Call OpenAI API]
-    Q --> R[Return Answer]
-    
-    D --> S[Load Test Cases]
-    S --> T[Run Each Query]
-    T --> U[Calculate Metrics]
-    U --> V[Generate Report]
-    
-    E --> W[Cache Operations]
-    W --> X[Show Stats or Clear]
+    E --> P[EmbeddingCache]
+    P --> Q[Show Info or Clear Files]
 ```
 
 ## Component Overview
 
 ```mermaid
-graph LR
-    subgraph "Data Layer"
-        A[docs.jsonl<br/>20 AI snippets]
-        B[golden_test.json<br/>15 test cases]
-    end
+flowchart LR
+    A[docs.jsonl] --> B[SimpleRAG]
+    C[golden_test.json] --> D[Evaluator]
     
-    subgraph "Core Components"
-        C[SimpleRAG<br/>Main pipeline]
-        D[Evaluator<br/>Recall at K + Answer Quality]
-        E[EmbeddingCache<br/>Disk-based storage]
-    end
+    B --> E[SentenceTransformers]
+    B --> F[OpenAI API]
+    B --> G[EmbeddingCache]
     
-    subgraph "External Services"
-        F[SentenceTransformers<br/>MiniLM embeddings]
-        G[OpenAI API<br/>GPT-4o-mini]
-    end
+    D --> B
     
-    subgraph "CLI Interface"
-        H[minirag ask<br/>Q&A interface]
-        I[minirag eval<br/>Performance testing]
-        J[minirag cache<br/>Cache management]
-    end
-    
-    A --> C
-    B --> D
-    C --> F
-    C --> G
-    C --> E
-    H --> C
-    I --> D
-    J --> E
-    D --> C
-    
-    style A fill:#e3f2fd
-    style B fill:#e3f2fd
-    style C fill:#f3e5f5
-    style D fill:#f3e5f5
-    style E fill:#fff3e0
-    style F fill:#e8f5e8
-    style G fill:#e8f5e8
+    H[CLI ask] --> B
+    I[CLI eval] --> D
+    J[CLI cache] --> G
 ```
 
 ## Features
