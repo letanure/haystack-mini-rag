@@ -6,6 +6,9 @@ import json
 from typing import List, Dict, Tuple
 from dotenv import load_dotenv
 
+# Suppress tokenizers parallelism warning
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
