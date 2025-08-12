@@ -99,12 +99,32 @@ with a generator to produce grounded answers [1].
 - **Generation**: OpenAI ChatCompletions API with citation prompting
 - **Code**: ~150 lines total, clean and readable
 
-## What I'd Improve Next
+## Learning Roadmap
 
-1. **Hybrid Retrieval**: Combine dense + sparse (BM25) for better recall
-2. **Vector Database**: Use Pinecone/Weaviate for production scale
-3. **Better Evaluation**: Add semantic similarity and answer quality metrics
-4. **Streaming**: Stream OpenAI responses for better UX
-5. **Caching**: Cache embeddings and common queries
-6. **Error Recovery**: Retry logic for API failures
-7. **Haystack v2 Pipeline**: Leverage full Haystack framework capabilities
+Ready to level up? Here's a suggested learning path with increasing complexity:
+
+### 🟢 **Beginner Extensions** (Start Here)
+1. **Add More Document Types**: Load PDFs, Word docs, web scraping
+2. **Improve Evaluation**: Add more test queries, measure answer quality
+3. **Simple Caching**: Cache embeddings to disk, avoid re-computing
+4. **Basic Error Handling**: Retry failed API calls, better error messages
+
+### 🟡 **Intermediate RAG** (Build Production Skills)  
+5. **Hybrid Search**: Combine semantic search + keyword (BM25) search
+6. **Document Chunking**: Split long docs into smaller, searchable pieces
+7. **Multiple Models**: Compare different embedding models (OpenAI, Cohere)
+8. **Streaming Responses**: Stream OpenAI answers for better UX
+
+### 🔴 **Advanced RAG** (Research-Level Techniques)
+9. **Re-ranking**: Use cross-encoder models to re-rank retrieved docs
+10. **Query Expansion**: Generate multiple query variations for better recall
+11. **Vector Databases**: Replace in-memory with Pinecone/Weaviate/Chroma
+12. **Agent Workflows**: Multi-step reasoning, tool use, function calling
+
+### 🚀 **Production RAG** (Real-World Deployment)
+13. **Evaluation Suite**: Automated testing, A/B testing, user feedback
+14. **Monitoring**: Track performance, costs, user satisfaction  
+15. **Security**: Input sanitization, rate limiting, content filtering
+16. **Scalability**: Load balancing, distributed embeddings, cost optimization
+
+**Next Suggested Step**: Pick one beginner extension and implement it! Start with #2 (better evaluation) to measure improvements.
