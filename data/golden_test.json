@@ -2,23 +2,78 @@
   "test_cases": [
     {
       "query": "What is RAG?",
-      "relevant_doc_ids": ["1"]
+      "relevant_doc_ids": ["1"],
+      "expected_answer": "RAG combines retrieval and generation for grounded answers"
     },
     {
       "query": "How do embeddings work?",
-      "relevant_doc_ids": ["2", "3"]
+      "relevant_doc_ids": ["2", "3"],
+      "expected_answer": "Embeddings map text to vectors where similar texts are close together"
     },
     {
       "query": "What are transformers in NLP?",
-      "relevant_doc_ids": ["6", "12"]
+      "relevant_doc_ids": ["6", "12"],
+      "expected_answer": "Transformers use self-attention to capture long-range dependencies in text"
     },
     {
       "query": "How can I improve language model outputs?",
-      "relevant_doc_ids": ["10", "14", "16"]
+      "relevant_doc_ids": ["10", "14", "16"],
+      "expected_answer": "Use prompt engineering, chain-of-thought, and adjust temperature"
     },
     {
       "query": "What is semantic search?",
-      "relevant_doc_ids": ["20", "2", "11"]
+      "relevant_doc_ids": ["20", "2", "11"],
+      "expected_answer": "Semantic search finds documents by meaning rather than exact keywords"
+    },
+    {
+      "query": "What is BERT?",
+      "relevant_doc_ids": ["7"],
+      "expected_answer": "BERT uses bidirectional training to understand context from both sides"
+    },
+    {
+      "query": "How do GPT models work?",
+      "relevant_doc_ids": ["8"],
+      "expected_answer": "GPT models predict the next token in a sequence autoregressively"
+    },
+    {
+      "query": "What is fine-tuning?",
+      "relevant_doc_ids": ["9"],
+      "expected_answer": "Fine-tuning adapts pre-trained models using domain-specific datasets"
+    },
+    {
+      "query": "What is zero-shot learning?",
+      "relevant_doc_ids": ["13"],
+      "expected_answer": "Zero-shot learning performs tasks without task-specific training examples"
+    },
+    {
+      "query": "What is tokenization?",
+      "relevant_doc_ids": ["15"],
+      "expected_answer": "Tokenization breaks text into smaller processable units like words or subwords"
+    },
+    {
+      "query": "What is hallucination in AI?",
+      "relevant_doc_ids": ["17"],
+      "expected_answer": "Hallucination is when models generate plausible but incorrect information"
+    },
+    {
+      "query": "What are cross-encoders?",
+      "relevant_doc_ids": ["18"],
+      "expected_answer": "Cross-encoders score document-query pairs but are slower than bi-encoders"
+    },
+    {
+      "query": "What is document chunking?",
+      "relevant_doc_ids": ["19"],
+      "expected_answer": "Chunking splits long documents into smaller pieces for better processing"
+    },
+    {
+      "query": "What are vector databases?",
+      "relevant_doc_ids": ["11"],
+      "expected_answer": "Vector databases store and index embeddings for efficient similarity search"
+    },
+    {
+      "query": "What is attention in transformers?",
+      "relevant_doc_ids": ["12"],
+      "expected_answer": "Attention allows models to focus on relevant input parts when processing sequences"
     }
   ]
 }

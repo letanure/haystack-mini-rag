@@ -44,30 +44,28 @@ def ask(question: str, k: int, show_sources: bool):
 
 
 @main.command()
-def eval():
+@click.option("--detailed", is_flag=True, help="Show detailed evaluation report")
+def eval(detailed: bool):
     """Evaluate the RAG system."""
+    from .evaluator import Evaluator
+    
     click.echo("📊 Running evaluation...")
     
     rag = SimpleRAG()
     rag.setup()
+    evaluator = Evaluator(rag)
     
-    # Load test data
-    with open("data/golden_test.json") as f:
-        test_data = json.load(f)["test_cases"]
-    
-    click.echo("-" * 30)
-    
-    for k in [1, 3, 5]:
-        hits = 0
-        for case in test_data:
-            sources = rag.search(case["query"], k)
-            returned_ids = {s.id for s in sources}
-            relevant_ids = set(case["relevant_doc_ids"])
-            if returned_ids & relevant_ids:
-                hits += 1
-        
-        recall = hits / len(test_data)
-        click.echo(f"Recall@{k}: {recall:.1%} ({hits}/{len(test_data)})")
+    if detailed:
+        report = evaluator.detailed_report("data/golden_test.json")
+        click.echo(report)
+    else:
+        results = evaluator.evaluate("data/golden_test.json")
+        click.echo("-" * 40)
+        click.echo(f"Recall@1:  {results.recall_at_1:.1%}")
+        click.echo(f"Recall@3:  {results.recall_at_3:.1%}")  
+        click.echo(f"Recall@5:  {results.recall_at_5:.1%}")
+        click.echo(f"Answer Quality: {results.answer_relevance:.1%}")
+        click.echo(f"Total Queries:  {results.total_queries}")
 
 
 if __name__ == "__main__":
