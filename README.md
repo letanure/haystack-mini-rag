@@ -14,10 +14,10 @@ graph TD
     
     C --> F[1. Setup Phase]
     F --> F1{Cache Check}
-    F1 -->|Cache Hit| F2[📦 Load from .cache/]
-    F1 -->|Cache Miss| F3[🔄 Load docs.jsonl]
+    F1 -->|Cache Hit| F2[Load from .cache/]
+    F1 -->|Cache Miss| F3[Load docs.jsonl]
     F3 --> F4[Generate Embeddings<br/>SentenceTransformers]
-    F4 --> F5[💾 Save to Cache]
+    F4 --> F5[Save to Cache]
     F5 --> F6[Create Document Store]
     F2 --> F6
     F6 --> F7[Store in InMemoryDocumentStore]
@@ -33,18 +33,18 @@ graph TD
     H2 --> H3[Return Generated Answer<br/>with Citations]
     
     D --> I[Evaluation Flow]
-    I --> I1[Load Test Cases<br/>golden_test.json (15 cases)]
+    I --> I1[Load Test Cases<br/>golden_test.json 15 cases]
     I1 --> I2[For Each Query]
     I2 --> I3[Search Pipeline<br/>Use SimpleRAG.search()]
     I3 --> I4[Calculate Recall@K<br/>K=1,3,5]
     I2 --> I5[Full Pipeline<br/>Use SimpleRAG.ask()]
     I5 --> I6[Answer Quality<br/>Keyword Overlap vs Expected]
-    I4 --> I7[📊 Evaluation Report<br/>Recall + Answer Quality]
+    I4 --> I7[Evaluation Report<br/>Recall + Answer Quality]
     I6 --> I7
     
     E --> E1{Cache Action}
     E1 -->|Info| E2[Show Cache Stats]
-    E1 -->|Clear| E3[🗑️ Delete All Cache]
+    E1 -->|Clear| E3[Delete All Cache]
     
     style F fill:#e1f5fe
     style G fill:#f3e5f5
