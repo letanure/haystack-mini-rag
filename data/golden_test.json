@@ -1,0 +1,24 @@
+{
+  "test_cases": [
+    {
+      "query": "What is RAG?",
+      "relevant_doc_ids": ["1"]
+    },
+    {
+      "query": "How do embeddings work?",
+      "relevant_doc_ids": ["2", "3"]
+    },
+    {
+      "query": "What are transformers in NLP?",
+      "relevant_doc_ids": ["6", "12"]
+    },
+    {
+      "query": "How can I improve language model outputs?",
+      "relevant_doc_ids": ["10", "14", "16"]
+    },
+    {
+      "query": "What is semantic search?",
+      "relevant_doc_ids": ["20", "2", "11"]
+    }
+  ]
+}

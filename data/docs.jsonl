@@ -1,0 +1,20 @@
+{"id":"1","content":"Retrieval-Augmented Generation (RAG) combines a retriever with a generator to produce grounded answers."}
+{"id":"2","content":"Embeddings map text into high-dimensional vectors so semantically similar texts are close."}
+{"id":"3","content":"Cosine similarity measures the angle between vectors; higher cosine means more similar."}
+{"id":"4","content":"Hybrid search combines dense and sparse retrieval to improve recall and robustness."}
+{"id":"5","content":"Evaluation for RAG often tracks Recall@K for retrieval and human ratings for answer quality."}
+{"id":"6","content":"Transformers revolutionized NLP by using self-attention to capture long-range dependencies in text."}
+{"id":"7","content":"BERT uses bidirectional training to understand context from both left and right sides of tokens."}
+{"id":"8","content":"GPT models are autoregressive language models trained to predict the next token in a sequence."}
+{"id":"9","content":"Fine-tuning adapts pre-trained models to specific tasks using smaller domain-specific datasets."}
+{"id":"10","content":"Prompt engineering is the practice of crafting inputs to get desired outputs from language models."}
+{"id":"11","content":"Vector databases store and index embeddings for efficient similarity search at scale."}
+{"id":"12","content":"Attention mechanisms allow models to focus on relevant parts of the input when processing sequences."}
+{"id":"13","content":"Zero-shot learning enables models to perform tasks without any task-specific training examples."}
+{"id":"14","content":"Chain-of-thought prompting improves reasoning by asking models to show intermediate steps."}
+{"id":"15","content":"Tokenization breaks text into smaller units that models can process, like words or subwords."}
+{"id":"16","content":"Temperature controls randomness in language model outputs; lower values make outputs more deterministic."}
+{"id":"17","content":"Hallucination occurs when language models generate plausible-sounding but factually incorrect information."}
+{"id":"18","content":"Cross-encoders score document-query pairs directly but are slower than bi-encoders for retrieval."}
+{"id":"19","content":"Chunking strategies split long documents into smaller pieces for better retrieval and processing."}
+{"id":"20","content":"Semantic search finds documents based on meaning rather than exact keyword matches."}
