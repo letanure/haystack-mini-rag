@@ -17,8 +17,8 @@ A lightweight Retrieval-Augmented Generation (RAG) implementation for learning p
 python3 -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Install in development mode
+pip install -e .
 
 # Configure OpenAI API key
 cp .env.example .env
@@ -29,24 +29,30 @@ cp .env.example .env
 
 ### Basic Q&A
 ```bash
-python app.py "What is RAG?"
+minirag ask "What is RAG?"
 ```
 
 ### With source documents
 ```bash
-python app.py "How do embeddings work?" --show-sources
+minirag ask "How do embeddings work?" --show-sources
 ```
 
 ### Adjust retrieval count
 ```bash
-python app.py "What are transformers?" --k 5 --show-sources
+minirag ask "What are transformers?" --k 5 --show-sources
 ```
 
 ## Evaluation
 
 Run retrieval evaluation with Recall@K metrics:
 ```bash
-python eval.py
+minirag eval
+```
+
+Or run directly:
+```bash
+python -m minirag.cli ask "What is RAG?"
+python -m minirag.cli eval
 ```
 
 Output shows:
