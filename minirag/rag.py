@@ -13,6 +13,8 @@ from haystack.components.embedders import (
 )
 from haystack.components.retrievers.in_memory import InMemoryEmbeddingRetriever
 
+from .cache import EmbeddingCache
+
 try:
     from openai import OpenAI
 except ImportError:
@@ -31,9 +33,12 @@ class SimpleRAG:
     """Simple RAG system following the load -> embed -> search -> generate pipeline."""
     
     def __init__(self, docs_path: str = "data/docs.jsonl", 
-                 embed_model: str = "sentence-transformers/all-MiniLM-L6-v2"):
+                 embed_model: str = "sentence-transformers/all-MiniLM-L6-v2",
+                 use_cache: bool = True):
         self.docs_path = docs_path
         self.embed_model = embed_model  # MiniLM: fast, 384 dimensions, good quality
+        self.use_cache = use_cache
+        self.cache = EmbeddingCache() if use_cache else None
         self.retriever = None
         self.query_embedder = None
         
@@ -61,20 +66,36 @@ class SimpleRAG:
             raise ValueError(f"No valid documents found in {self.docs_path}")
         return docs
     
-    def setup(self):
+    def setup(self, force_refresh: bool = False):
         """Initialize the RAG system - embed documents once, query many times."""
-        docs = self.load_documents()
-        
-        # Create document store (in-memory for simplicity)
         store = InMemoryDocumentStore()
+        embedded_docs = None
         
-        # Convert documents to embeddings
-        doc_embedder = SentenceTransformersDocumentEmbedder(
-            model=self.embed_model, progress_bar=False
-        )
-        doc_embedder.warm_up()
-        embedded_docs = doc_embedder.run(documents=docs)
-        store.write_documents(embedded_docs["documents"])
+        # Try to load from cache first
+        if self.use_cache and not force_refresh:
+            embedded_docs = self.cache.get_cached_docs(self.docs_path, self.embed_model)
+        
+        if embedded_docs is not None:
+            print("📦 Using cached embeddings")
+            store.write_documents(embedded_docs)
+        else:
+            print("🔄 Computing embeddings...")
+            docs = self.load_documents()
+            
+            # Convert documents to embeddings
+            doc_embedder = SentenceTransformersDocumentEmbedder(
+                model=self.embed_model, progress_bar=False
+            )
+            doc_embedder.warm_up()
+            embedded_result = doc_embedder.run(documents=docs)
+            embedded_docs = embedded_result["documents"]
+            
+            # Cache the embedded documents
+            if self.use_cache:
+                self.cache.save_embedded_docs(self.docs_path, self.embed_model, embedded_docs)
+                print("💾 Cached embeddings for future use")
+            
+            store.write_documents(embedded_docs)
         
         # Create retriever and query embedder (same model for consistency)
         self.retriever = InMemoryEmbeddingRetriever(document_store=store)

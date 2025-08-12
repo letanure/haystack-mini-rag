@@ -17,12 +17,13 @@ def main():
 @click.argument("question")
 @click.option("--k", default=4, help="Number of docs to retrieve")
 @click.option("--show-sources", is_flag=True, help="Show source documents")
-def ask(question: str, k: int, show_sources: bool):
+@click.option("--refresh-cache", is_flag=True, help="Refresh embedding cache")
+def ask(question: str, k: int, show_sources: bool, refresh_cache: bool):
     """Ask a question."""
     click.echo("🔄 Loading...")
     
     rag = SimpleRAG()
-    rag.setup()
+    rag.setup(force_refresh=refresh_cache)
     
     click.echo("🔍 Searching...")
     answer, sources = rag.ask(question, k)
@@ -45,14 +46,15 @@ def ask(question: str, k: int, show_sources: bool):
 
 @main.command()
 @click.option("--detailed", is_flag=True, help="Show detailed evaluation report")
-def eval(detailed: bool):
+@click.option("--refresh-cache", is_flag=True, help="Refresh embedding cache")
+def eval(detailed: bool, refresh_cache: bool):
     """Evaluate the RAG system."""
     from .evaluator import Evaluator
     
     click.echo("📊 Running evaluation...")
     
     rag = SimpleRAG()
-    rag.setup()
+    rag.setup(force_refresh=refresh_cache)
     evaluator = Evaluator(rag)
     
     if detailed:
@@ -66,6 +68,27 @@ def eval(detailed: bool):
         click.echo(f"Recall@5:  {results.recall_at_5:.1%}")
         click.echo(f"Answer Quality: {results.answer_relevance:.1%}")
         click.echo(f"Total Queries:  {results.total_queries}")
+
+
+@main.command()
+@click.option("--clear", is_flag=True, help="Clear all cached embeddings")
+def cache(clear: bool):
+    """Manage embedding cache."""
+    from .cache import EmbeddingCache
+    
+    cache_manager = EmbeddingCache()
+    
+    if clear:
+        cache_manager.clear_cache()
+        click.echo("🗑️  Cleared all cached embeddings")
+        return
+    
+    # Show cache info
+    info = cache_manager.cache_info()
+    click.echo(f"📦 Cache Info:")
+    click.echo(f"  Location: {info['cache_dir']}")
+    click.echo(f"  Files: {info['num_files']}")
+    click.echo(f"  Size: {info['total_size_mb']:.1f} MB")
 
 
 if __name__ == "__main__":
