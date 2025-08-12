@@ -2,7 +2,7 @@
 import sys
 import json
 from typing import List, Dict, Tuple
-from app import load_docs, DenseRetriever, EMBED_MODEL, DOCS_PATH
+from app import load_docs_haystack, build_haystack, haystack_top_k, EMBED_MODEL, DOCS_PATH
 
 # --- Colors for terminal output ---
 class Colors:
@@ -32,45 +32,45 @@ def load_golden(path: str) -> List[Dict[str, object]]:
         data = json.load(f)
         return data["test_cases"]
 
-def recall_at_k(retriever: DenseRetriever, golden: List[Dict[str, object]], k: int) -> float:
+def recall_at_k(retriever, q_embedder, golden: List[Dict[str, object]], k: int) -> float:
     hits = 0
     for case in golden:
         q = str(case["query"])
         relevant = set(case["relevant_doc_ids"])
-        top = retriever.top_k(q, k=k)
+        top = haystack_top_k(retriever, q_embedder, q, k)
         returned_ids = {d["id"] for (d, _) in top}
         if relevant & returned_ids:
             hits += 1
     return hits / len(golden)
 
 if __name__ == "__main__":
-    docs = load_docs(DOCS_PATH)
-    retr = DenseRetriever(docs, EMBED_MODEL)
+    docs = load_docs_haystack(DOCS_PATH)
+    _, retriever, q_embedder = build_haystack(docs, EMBED_MODEL)
     golden = load_golden(GOLDEN_PATH)
     
-    print(f"\n{Colors.BOLD}{Colors.CYAN}📊 Evaluation Results{Colors.RESET}")
+    print(f"\n{Colors.BOLD}{Colors.CYAN}Evaluation Results{Colors.RESET}")
     print("━" * 40)
     print(f"Dataset: {len(docs)} documents | Test queries: {len(golden)}")
     print("━" * 40)
     
     results = []
     for k in (1, 3, 5):
-        r = recall_at_k(retr, golden, k)
+        r = recall_at_k(retriever, q_embedder, golden, k)
         results.append((k, r))
         
         # Color code based on performance
         if r >= 0.9:
             color = Colors.GREEN
-            icon = "✅"
+            icon = "[PASS]"
         elif r >= 0.7:
             color = Colors.YELLOW
-            icon = "⚠️"
+            icon = "[WARN]"
         else:
             color = Colors.RED
-            icon = "❌"
+            icon = "[FAIL]"
         
         bar_length = int(r * 20)
-        bar = "█" * bar_length + "░" * (20 - bar_length)
+        bar = "=" * bar_length + "-" * (20 - bar_length)
         
         print(f"{icon} Recall@{k}: {color}{r:.2%}{Colors.RESET} {bar}")
     

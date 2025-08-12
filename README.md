@@ -1,16 +1,16 @@
-# Mini RAG System 🤖
+# Mini RAG System
 
-A lightweight Retrieval-Augmented Generation (RAG) implementation for learning purposes, featuring dense retrieval with sentence-transformers and OpenAI generation.
+A lightweight Retrieval-Augmented Generation (RAG) implementation for learning purposes, featuring dense retrieval with Haystack v2 components and OpenAI generation.
 
-## Features ✨
+## Features
 
-- 🔍 **Dense Retrieval**: Uses sentence-transformers (MiniLM) for semantic search
-- 💬 **OpenAI Generation**: Integrates with GPT-4o-mini for answer generation
-- 📊 **Evaluation**: Recall@K metrics for retrieval quality assessment
-- 🎨 **Beautiful CLI**: Color-coded output with progress indicators
-- 📚 **20 AI/ML documents**: Curated knowledge base about AI concepts
+- **Dense Retrieval**: Uses Haystack v2 with sentence-transformers (MiniLM) for semantic search
+- **OpenAI Generation**: Integrates with GPT-4o-mini for answer generation
+- **Evaluation**: Recall@K metrics for retrieval quality assessment
+- **Beautiful CLI**: Color-coded output with progress indicators
+- **20 AI/ML documents**: Curated knowledge base about AI concepts
 
-## Setup 🚀
+## Setup
 
 ```bash
 # Create virtual environment
@@ -25,7 +25,7 @@ cp .env.example .env
 # Edit .env and add your OPENAI_API_KEY
 ```
 
-## Usage 💻
+## Usage
 
 ### Basic Q&A
 ```bash
@@ -42,7 +42,7 @@ python app.py "How do embeddings work?" --show-sources
 python app.py "What are transformers?" --k 5 --show-sources
 ```
 
-## Evaluation 📈
+## Evaluation
 
 Run retrieval evaluation with Recall@K metrics:
 ```bash
@@ -54,26 +54,26 @@ Output shows:
 - Recall@3: 100% (all queries find relevant docs in top 3)
 - Recall@5: 100% (perfect recall at k=5)
 
-## Example Output 🎯
+## Example Output
 
 ```
-❓ Question: What is RAG?
+Question: What is RAG?
 
-🔍 Top 4 Retrieved Documents:
+Top 4 Retrieved Documents:
 ────────────────────────────────────────
   1. [id=1] (score: 0.367)
      Retrieval-Augmented Generation (RAG) combines a retriever with a generator...
   
-💡 Generating answer...
+Generating answer...
 
-✨ Answer:
+Answer:
 ────────────────────────────────────────
 RAG stands for Retrieval-Augmented Generation, which combines a retriever 
 with a generator to produce grounded answers [1].
 ────────────────────────────────────────
 ```
 
-## Project Structure 📁
+## Project Structure
 
 ```
 .
@@ -86,14 +86,14 @@ with a generator to produce grounded answers [1].
 └── .env               # API keys (create from .env.example)
 ```
 
-## Technical Details 🔧
+## Technical Details
 
 - **Embeddings**: 384-dimensional vectors from `all-MiniLM-L6-v2`
 - **Retrieval**: Cosine similarity on normalized vectors
 - **Generation**: OpenAI ChatCompletions API with citation prompting
 - **Code**: ~150 lines total, clean and readable
 
-## What I'd Improve Next 🚧
+## What I'd Improve Next
 
 1. **Hybrid Retrieval**: Combine dense + sparse (BM25) for better recall
 2. **Vector Database**: Use Pinecone/Weaviate for production scale
