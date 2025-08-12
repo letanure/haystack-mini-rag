@@ -1,4 +1,13 @@
+# Python
 .venv/
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+
+# Environment
 .env
+.DS_Store
+*.log
