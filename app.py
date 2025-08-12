@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import sys
 import argparse
 import json
 from typing import List, Dict, Tuple
@@ -7,6 +8,34 @@ from dotenv import load_dotenv
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
+
+# --- Colors for terminal output ---
+class Colors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
+    RESET = '\033[0m'
+    
+    @staticmethod
+    def disable():
+        Colors.HEADER = ''
+        Colors.BLUE = ''
+        Colors.CYAN = ''
+        Colors.GREEN = ''
+        Colors.YELLOW = ''
+        Colors.RED = ''
+        Colors.BOLD = ''
+        Colors.DIM = ''
+        Colors.RESET = ''
+
+# Disable colors if output is not a terminal
+if not sys.stdout.isatty():
+    Colors.disable()
 
 # --- Config ---
 DOCS_PATH = "data/docs.jsonl"
@@ -62,10 +91,10 @@ def build_prompt(question: str, sources: List[Dict[str, str]]) -> str:
 def generate_answer(question: str, sources: List[Dict[str, str]]) -> str:
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        return "[error] OPENAI_API_KEY not set. Create .env and export the key."
+        return f"{Colors.RED}[error]{Colors.RESET} OPENAI_API_KEY not set. Create .env and export the key."
 
     if OpenAI is None:
-        return "[error] openai package is not installed. Run: pip install openai"
+        return f"{Colors.RED}[error]{Colors.RESET} openai package is not installed. Run: pip install openai"
 
     client = OpenAI(api_key=api_key)
     prompt = build_prompt(question, sources)
@@ -95,22 +124,35 @@ def main():
     hits = retriever.top_k(args.question, k=args.k)
     top_docs = [d for (d, _) in hits]
 
-    print(f"Q: {args.question}")
-    print("Top matches:")
+    # Display question
+    print(f"\n{Colors.BOLD}{Colors.CYAN}❓ Question:{Colors.RESET} {args.question}")
+    
+    # Display retrieval results
+    print(f"\n{Colors.BOLD}{Colors.BLUE}🔍 Top {args.k} Retrieved Documents:{Colors.RESET}")
+    print("─" * 80)
     for i, (d, score) in enumerate(hits, 1):
         short = d["content"]
-        if len(short) > 120:
-            short = short[:117] + "..."
-        print(f"{i}. [id={d['id']}] cos={score:.3f} — {short}")
-
+        if len(short) > 100:
+            short = short[:97] + "..."
+        score_color = Colors.GREEN if score > 0.3 else Colors.YELLOW if score > 0.2 else Colors.DIM
+        print(f"  {Colors.BOLD}{i}.{Colors.RESET} [{Colors.CYAN}id={d['id']}{Colors.RESET}] {score_color}(score: {score:.3f}){Colors.RESET}")
+        print(f"     {Colors.DIM}{short}{Colors.RESET}")
+    
+    # Generate and display answer
+    print(f"\n{Colors.BOLD}{Colors.GREEN}💡 Generating answer...{Colors.RESET}")
     answer = generate_answer(args.question, top_docs)
-    print("\n--- Answer ---")
-    print(answer)
+    print(f"\n{Colors.BOLD}{Colors.GREEN}✨ Answer:{Colors.RESET}")
+    print("─" * 80)
+    print(f"{answer}")
+    print("─" * 80)
 
     if args.show_sources:
-        print("\n-- SOURCES --")
-        for d in top_docs:
-            print(f"[{d['id']}] {d['content']}")
+        print(f"\n{Colors.BOLD}{Colors.HEADER}📚 Source Documents:{Colors.RESET}")
+        print("─" * 80)
+        for i, d in enumerate(top_docs, 1):
+            print(f"  {Colors.BOLD}[{Colors.CYAN}{d['id']}{Colors.RESET}{Colors.BOLD}]{Colors.RESET} {d['content']}")
+            if i < len(top_docs):
+                print()
 
 if __name__ == "__main__":
     main()
