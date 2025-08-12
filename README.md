@@ -6,26 +6,15 @@ A lightweight Retrieval-Augmented Generation (RAG) implementation for learning p
 
 ```mermaid
 flowchart TD
-    A[User] --> B[CLI Commands]
+    A[User] --> B[CLI]
     
     B --> C[minirag ask]
     B --> D[minirag eval]
     B --> E[minirag cache]
     
-    C --> F[SimpleRAG]
-    F --> G[Setup with Cache Check]
-    G --> H[Search Documents]
-    H --> I[Generate Answer]
-    I --> J[Return Response]
-    
-    D --> K[Evaluator]
-    K --> L[Load Test Cases]
-    L --> M[Run SimpleRAG on Each]
-    M --> N[Calculate Recall and Quality]
-    N --> O[Show Results]
-    
-    E --> P[EmbeddingCache]
-    P --> Q[Show Info or Clear Files]
+    C --> F[SimpleRAG Pipeline]
+    D --> G[Evaluator Process]
+    E --> H[Cache Operations]
 ```
 
 ## Component Overview
